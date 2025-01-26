@@ -2,44 +2,43 @@ import pyttsx3
 import datetime as dt
 import webbrowser as wb
 
-
+# Initialize the speech engine
 engine = pyttsx3.init()
 
-print("Hello, I am Jarvis, How can I assist you?")
-engine.say("Hello, I am Jarvis, How can I assist you?")
-engine.runAndWait()
-
-
-print("How can I help you?")
-engine.say("How can I help you?")
-engine.runAndWait()
-user_inp= input()
-
-
-print(f"Ok so you want me to do is {user_inp}")
-engine.say(f"Ok so you want me to do is {user_inp}")
-engine.runAndWait()
-
-
-commands = ['open google','open cricbuzz','open youtube',"what's the time"]
-
-if(commands[0] == user_inp.lower()):
-    engine.say("Opening Google")
+# Function to make Jarvis speak
+def speak(text):
+    print(text)
+    engine.say(text)
     engine.runAndWait()
-    wb.open("https://www.google.com/")
 
-elif(commands[1] == user_inp.lower()):
-    engine.say("Opening Cricbuzz")
-    engine.runAndWait()
-    wb.open("https://www.cricbuzz.com/")
+# Function to handle greetings and user input
+def greet_and_get_input():
+    speak("Hello, I am Jarvis. How can I assist you?")
+    user_input = input("How can I help you?\n").lower()
+    return user_input
 
-elif(commands[2] == user_inp.lower()):
-    engine.say("Opening youtube")
-    engine.runAndWait()
-    wb.open("https://www.youtube.com/")
+# Function to match user input with commands
+def process_command(user_input):
+    if "google" in user_input:
+        speak("Opening Google")
+        wb.open("https://www.google.com/")
 
-elif(commands[3] == user_inp.lower()) :
-    current_date_time = dt.datetime.now()
-    print(current_date_time)
-    engine.say(f"The current date and time is {current_date_time}")
-    engine.runAndWait()
+    elif "cricbuzz" in user_input:
+        speak("Opening Cricbuzz")
+        wb.open("https://www.cricbuzz.com/")
+
+    elif "youtube" in user_input:
+        speak("Opening YouTube")
+        wb.open("https://www.youtube.com/")
+
+    elif "time" in user_input or "date" in user_input:
+        current_date_time = dt.datetime.now().strftime('%I:%M %p, %A, %d %B %Y')
+        speak(f"The current date and time is {current_date_time}")
+
+    else:
+        speak("I am sorry, I didn't understand that. Please try again.")
+
+# Main program
+if __name__ == "__main__":
+    user_command = greet_and_get_input()
+    process_command(user_command)
